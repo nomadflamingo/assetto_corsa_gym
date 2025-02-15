@@ -1,6 +1,6 @@
 load_offline_data: False    # offline pre-training and data loading
 pre_train: False            # pre train using offline data before start online training
-dataset_path: null          # Path to the datasets, null means it will be overridden by the command line if needed
+dataset_path: "C:\\AssettoCorsaGymDataSet\\data_sets"          # Path to the datasets, null means it will be overridden by the command line if needed
 work_dir: null              # Path to run the model from (default: None)
 task: AssettoCorsaEnv
 seed: 0
@@ -71,8 +71,8 @@ AssettoCorsa:
   enable_task_id_in_obs: False
   penalize_actions_diff: False
   penalize_actions_diff_coef: 0.1
-  track: "ks_barcelona-layout_gp"  # monza ks_barcelona-layout_gp ks_red_bull_ring-layout_gp, indianapolis_sp, ks_silverstone-gp
-  car: "dallara_f317"              # dallara_f317, ks_mazda_miata, bmw_z4_gt3
+  track: "monza"  # monza ks_barcelona-layout_gp ks_red_bull_ring-layout_gp, indianapolis_sp, ks_silverstone-gp
+  car: "bmw_z4_gt3"              # dallara_f317, ks_mazda_miata, bmw_z4_gt3
   use_ac_out_of_track: True
   add_previous_obs_to_state: True
   use_reference_line_in_reward: True
