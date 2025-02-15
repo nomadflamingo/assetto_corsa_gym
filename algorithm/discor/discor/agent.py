@@ -110,7 +110,10 @@ class Agent:
                     logger.info("Evaluating")
                     self.evaluate()
         finally:
-            self.save(os.path.join(self._model_dir, 'final'), save_buffer=True)
+            final_model_dir = os.path.join(self._model_dir, 'final')
+            logger.info(f"training finished. saving final model and replay buffer to {final_model_dir}. this may take a while. if you wish to use this model for further training, do not interrupt.")
+            self.save(final_model_dir, save_buffer=True)
+            logger.info(f"saved final model and replay buffer to {final_model_dir}")
 
     def update_model(self):
         train_stats = None
