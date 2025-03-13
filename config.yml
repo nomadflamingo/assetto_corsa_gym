@@ -77,3 +77,6 @@ AssettoCorsa:
   add_previous_obs_to_state: True
   use_reference_line_in_reward: True
   use_target_speed: False
+
+Logging:
+  log_level: info # debug, info, warning

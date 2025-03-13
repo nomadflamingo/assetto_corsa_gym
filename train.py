@@ -54,9 +54,11 @@ def main():
         work_dir = os.path.abspath(work_dir) + os.sep
         os.makedirs(work_dir, exist_ok=True)
     config.work_dir = work_dir
-
+    
     logging_config.create_logging(level=logging.DEBUG, file_name=work_dir + "log.log")
-    logging.getLogger().setLevel(logging.INFO)
+    
+    log_level = getattr(logging, config.Logging.log_level.upper(), logging.INFO) # logging level info by default
+    logging.getLogger().setLevel(log_level)
 
     # log system and git info
     misc.get_system_info()
