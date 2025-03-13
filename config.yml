@@ -30,6 +30,7 @@ Agent:
   eval_interval: 0
   num_eval_episodes: 1
   checkpoint_freq: 200_000
+  save_buffer_on_end: False
 
 SAC:
   gamma: 0.992
@@ -53,7 +54,7 @@ AssettoCorsa:
   train_steps: 10_000_000
   gap_const: 12.
   eval_number_of_laps: 4    # including out lap which is incomplete
-  save_lap_csv: False
+  save_lap_csv: True
   remote_machine_ip: "localhost"   # "192.168.0.1" # "localhost"
   ego_server_port: 2345
   opponents_server_port: 2346

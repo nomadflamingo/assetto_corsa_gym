@@ -20,13 +20,15 @@ class Agent:
     def __init__(self, env, test_env, algo, log_dir, device, num_steps=3000000,
                  batch_size=256, memory_size=1_000_000,
                  update_interval=1, start_steps=10000, log_interval=10, checkpoint_freq=0,
-                 eval_interval=5000, num_eval_episodes=5, seed=0, use_offline_buffer=False, offline_buffer_size=1_000_000, wandb_logger=None):
+                 eval_interval=5000, num_eval_episodes=5, seed=0, use_offline_buffer=False, offline_buffer_size=1_000_000, wandb_logger=None,
+                 save_buffer_on_end=True):
 
         # Environment.
         self._env = env
         self._test_env = test_env
         self.checkpoint_freq = checkpoint_freq
         self.wandb_logger = wandb_logger
+        self.save_buffer_on_end = save_buffer_on_end
 
         self._env.seed(seed)
         self._test_env.seed(2**31-1-seed)
@@ -111,8 +113,9 @@ class Agent:
                     self.evaluate()
         finally:
             final_model_dir = os.path.join(self._model_dir, 'final')
-            logger.info(f"training finished. saving final model and replay buffer to {final_model_dir}. this may take a while. if you wish to use this model for further training, do not interrupt.")
-            self.save(final_model_dir, save_buffer=True)
+            if self.save_buffer_on_end:
+                logger.info(f"training finished. saving final model and replay buffer to {final_model_dir}. this may take a while. if you wish to use this model for further training, do not interrupt.")
+            self.save(final_model_dir, save_buffer=self.save_buffer_on_end)
             logger.info(f"saved final model and replay buffer to {final_model_dir}")
 
     def update_model(self):
