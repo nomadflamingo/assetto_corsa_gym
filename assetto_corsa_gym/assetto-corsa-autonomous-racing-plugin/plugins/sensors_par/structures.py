@@ -105,6 +105,10 @@ class Car(dict):
         self['cgHeight']             = ac.getCarState(self.car_id, acsys.CS.CGHeight)
         self['SlipAngle_fl'], self['SlipAngle_fr'], self['SlipAngle_rl'], self['SlipAngle_rr'] = ac.getCarState(self.car_id, acsys.CS.SlipAngle)
 
+
+        # send fuel consumption metrics
+        self['fuel'] = info.physics.fuel
+
         if self.send_extra_channels:
             # caution this increases the size of the message
             self['tyre_heading_vector']  = ac.getCarState(self.car_id, acsys.CS.TyreHeadingVector)

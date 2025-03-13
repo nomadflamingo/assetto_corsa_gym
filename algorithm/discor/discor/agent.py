@@ -72,6 +72,7 @@ class Agent:
 
         self.best_lap_time = np.inf
         self.best_reward = -np.inf
+        self.best_fuel = np.inf
 
         logger.info(f'num_steps: {num_steps}')
         logger.info(f'batch_size: {batch_size}')
@@ -216,7 +217,7 @@ class Agent:
         ep_stats['ep_steps'] = episode_steps
         ep_stats.update(env_ep_stats if isinstance(env_ep_stats, dict) else {})
 
-        if env_ep_stats["BestLap"] < self.best_lap_time:
+        if env_ep_stats["BestLap"] < self.best_lap_time and env_ep_stats["BestLap"] != 0:
             logger.info(f"new best lap time {env_ep_stats['BestLap']}")
             self.best_lap_time = env_ep_stats["BestLap"]
             self.save(os.path.join(self._model_dir, 'best_lap_time'), save_buffer=False)
@@ -225,6 +226,11 @@ class Agent:
             logger.info(f"new best reward {env_ep_stats['ep_reward']}")
             self.best_reward = env_ep_stats["ep_reward"]
             self.save(os.path.join(self._model_dir, 'best_reward'), save_buffer=False)
+
+        if env_ep_stats["BestLapFuel"] < self.best_fuel and env_ep_stats["BestLapFuel"] != 0:
+            logger.info(f"new min fuel usage {env_ep_stats['BestLapFuel']}")
+            self.best_lap_time = env_ep_stats["BestLapFuel"]
+            self.save(os.path.join(self._model_dir, 'best_lap_fuel'), save_buffer=False)
 
         eval_metrics = self.common_metrics()
         eval_metrics.update(ep_stats)

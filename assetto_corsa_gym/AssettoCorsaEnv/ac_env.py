@@ -736,6 +736,7 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
                 if save_csv:
                     save_csv_channels = ['steps', 'currentTime', 'done',
                                          'speed', 'reward', 'gap',
+                                         'fuel',
                                          'world_position_y',
                                          'world_position_x',
                                          'RPM',
@@ -752,6 +753,7 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
             differences = np.diff(ep.steps.values)
             number_packages_lost = np.sum(differences[differences > 1])
             gap_abs_max = np.abs(ep.gap).max()
+            fuel_per_lap = ep.groupby('LapCount')['fuel'].first() - ep.groupby('LapCount')['fuel'].last()
             r = { "ep_count": self.n_episodes,
                   "ep_steps":len(ep),
                   "total_steps": self.total_steps,
@@ -762,8 +764,29 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
                   #"completedLaps": ep.completedLaps.values[-1],
                   "BestLap": ep['BestLap'].values[-1] / 1000.,
             }
+            best_lap_fuel = np.inf
             for i, lapCount in enumerate(list(set( ep.LapCount ))):
-                r[f"LapNo_{i}"] = ep[ep.LapCount == lapCount]["iLastTime"].values[-1] / 1000 # to seconds
+                lap_data = ep[ep.LapCount == lapCount]
+                lap_time_seconds = lap_data["iLastTime"].values[-1] / 1000 # to seconds
+                r[f"LapNo_{i}_Time"] = lap_time_seconds
+                
+                # calculate fuel consumed per lap (only if the lap was complete and valid)
+                fuel_consumed = fuel_per_lap.values[i]
+                lap_complete_and_valid = lap_time_seconds != 0.0
+                fuel_consumed = fuel_consumed if lap_complete_and_valid else 0.0
+                r[f"LapNo_{i}_Fuel"] = fuel_consumed
+                
+                # update best_lap_fuel variable
+                if fuel_consumed < best_lap_fuel and fuel_consumed != 0.0:
+                    best_lap_fuel = fuel_consumed
+            
+            # if best_lap_fuel has been changed, store the changed value, otherwise 0
+            if best_lap_fuel != np.inf:
+                r['BestLapFuel'] = best_lap_fuel
+            else:
+                r['BestLapFuel'] = 0.0
+            
+
             if verbose:
                 logger.info(f"total_steps: {self.total_steps} ep_steps: {self.ep_steps} ep_reward: {r['ep_reward']:6.1f} "
                             f"LapDist: {self.state['LapDist']:6.2f} packages lost {number_packages_lost} BestLap: {r['BestLap']}")
