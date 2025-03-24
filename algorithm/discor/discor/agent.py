@@ -229,7 +229,7 @@ class Agent:
 
         if env_ep_stats["BestLapFuel"] < self.best_fuel and env_ep_stats["BestLapFuel"] != 0:
             logger.info(f"new min fuel usage {env_ep_stats['BestLapFuel']}")
-            self.best_lap_time = env_ep_stats["BestLapFuel"]
+            self.best_fuel = env_ep_stats["BestLapFuel"]
             self.save(os.path.join(self._model_dir, 'best_lap_fuel'), save_buffer=False)
 
         eval_metrics = self.common_metrics()
