@@ -231,6 +231,9 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
         self.penalize_actions_diff = config.penalize_actions_diff
         self.penalize_actions_diff_coef = config.penalize_actions_diff_coef
 
+        self.penalize_fuel_consumption = config.penalize_fuel_consumption
+        self.penalize_fuel_consumption_coef = config.penalize_fuel_consumption_coef
+
         self.max_laps_number = self.config.max_laps_number
 
         self.tracks_path = os.path.join(self.ac_configs_path, "tracks")
@@ -571,6 +574,16 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
         if self.penalize_actions_diff:
             action_difference_penalty = np.linalg.norm(actions_diff, ord=2)
             r -= action_difference_penalty * self.penalize_actions_diff_coef
+
+        if self.penalize_fuel_consumption:
+            fuel_consumption_penalty = state.get('fuel_diff', 0)  # fuel_diff might not be initialized
+            
+            # sanity check, this should not happen
+            if fuel_consumption_penalty < 0:
+                fuel_consumption_penalty = 0
+            
+            r -= fuel_consumption_penalty * self.penalize_fuel_consumption_coef
+
         r = r.reshape(-1)  # [N, 1] -> [N]
         return r
 
@@ -674,6 +687,22 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
             actions_diff = np.array([(state['steerAngle']  - history[-1]['steerAngle'])  / self.obs_channels_info['steerAngle'],
                                         (state['accStatus']   -  history[-1]['accStatus']),
                                         (state['brakeStatus'] - history[-1]['brakeStatus'])])
+        
+        # add fuel diff (needed for fuel consumption calculation)
+        if len(history) > 1:
+            # add sanity checks to make sure we don't have fuel that's greater than when we started the simulation
+            # sometimes this happens and causes the delta fuel to go crazy
+            starting_fuel = history[0]['fuel']
+            if history[-1]['fuel'] > starting_fuel:
+                faulty_step = history[-1]['steps']
+                logger.warning(f"Detected fuel at step '{faulty_step}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff set to 0")
+                state['fuel_diff'] = 0
+            elif state['fuel'] > starting_fuel:
+                faulty_step = state['steps']
+                logger.warning(f"Detected fuel at step '{faulty_step}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff set to 0")
+                state['fuel_diff'] = 0
+            else:
+                state['fuel_diff'] = history[-1]['fuel'] - state['fuel']
 
         # add last action to the observation. Action that got the sim to the current state
         obs = np.hstack([obs, state['steerAngle'] / self.obs_channels_info['steerAngle'], state['accStatus'], state['brakeStatus']])
@@ -767,13 +796,16 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
             best_lap_fuel = np.inf
             for i, lapCount in enumerate(list(set( ep.LapCount ))):
                 lap_data = ep[ep.LapCount == lapCount]
-                lap_time_seconds = lap_data["iLastTime"].values[-1] / 1000 # to seconds
+                lap_complete_and_valid = lap_data['done'].values[-1] == 0
+                
+                # calculate lap time in seconds
+                lap_time_seconds = lap_data["iLastTime"].values[-1] / 1000  # to seconds
+                lap_time_seconds = lap_time_seconds if lap_complete_and_valid else 0.0  # check if the lap is valid, else store 0 for this lap
                 r[f"LapNo_{i}_Time"] = lap_time_seconds
                 
                 # calculate fuel consumed per lap (only if the lap was complete and valid)
                 fuel_consumed = fuel_per_lap.values[i]
-                lap_complete_and_valid = lap_time_seconds != 0.0
-                fuel_consumed = fuel_consumed if lap_complete_and_valid else 0.0
+                fuel_consumed = fuel_consumed if lap_complete_and_valid else 0.0  # check if lap is valid, else store 0 for this lap
                 r[f"LapNo_{i}_Fuel"] = fuel_consumed
                 
                 # update best_lap_fuel variable
