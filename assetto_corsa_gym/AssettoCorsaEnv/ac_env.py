@@ -695,11 +695,11 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
             starting_fuel = history[0]['fuel']
             if history[-1]['fuel'] > starting_fuel:
                 faulty_step = history[-1]['steps']
-                logger.warning(f"Detected fuel at step '{faulty_step}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff set to 0")
+                logger.warning(f"Step {faulty_step}. Detected fuel '{history[-1]['fuel']}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff manually set to 0")
                 state['fuel_diff'] = 0
             elif state['fuel'] > starting_fuel:
                 faulty_step = state['steps']
-                logger.warning(f"Detected fuel at step '{faulty_step}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff set to 0")
+                logger.warning(f"Step {faulty_step}. Detected fuel '{state['fuel']}' (liters) to be greater than the starting fuel '{starting_fuel}' (liters). fuel_diff manually set to 0")
                 state['fuel_diff'] = 0
             else:
                 state['fuel_diff'] = history[-1]['fuel'] - state['fuel']
@@ -757,13 +757,13 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
                 s = {"states": self.states,
                      "static_info": self.static_info.copy()
                 }
-                save_path = f"{timestamp}_raw_data.pkl"
+                save_path = f"{timestamp}_ep{self.n_episodes}_raw_data.pkl"
                 to_pickle(s, save_path)
                 logger.info(f"Saved raw data to:")
                 logger.info(save_path)
 
                 if save_csv:
-                    save_csv_channels = ['steps', 'currentTime', 'done',
+                    save_csv_channels = ['steps', 'currentTime', 'done', 'LapInvalidated',
                                          'speed', 'reward', 'gap',
                                          'fuel',
                                          'world_position_y',
@@ -776,13 +776,12 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
                                          'current_action_abs_0', 'current_action_abs_1', 'current_action_abs_2',
                                          'actions_0', 'actions_1', 'actions_2', 'rl_point', 'out_of_track',
                                          ]
-                    ep[save_csv_channels].to_csv(f"{timestamp}_raw_data.csv", index=False)
+                    ep[save_csv_channels].to_csv(f"{timestamp}_ep{self.n_episodes}_raw_data.csv", index=False)
 
             # calculate steps lost in the communication with the server
             differences = np.diff(ep.steps.values)
             number_packages_lost = np.sum(differences[differences > 1])
             gap_abs_max = np.abs(ep.gap).max()
-            fuel_per_lap = ep.groupby('LapCount')['fuel'].first() - ep.groupby('LapCount')['fuel'].last()
             r = { "ep_count": self.n_episodes,
                   "ep_steps":len(ep),
                   "total_steps": self.total_steps,
@@ -794,18 +793,39 @@ class AssettoCorsaEnv(Env, gym_utils.EzPickle):
                   "BestLap": ep['BestLap'].values[-1] / 1000.,
             }
             best_lap_fuel = np.inf
-            for i, lapCount in enumerate(list(set( ep.LapCount ))):
+            valid_lap_indexes = ep.LapCount.unique()[:-1]
+            for i, lapCount in enumerate(valid_lap_indexes):  # don't process last lap because it's always incomplete
                 lap_data = ep[ep.LapCount == lapCount]
-                lap_complete_and_valid = lap_data['done'].values[-1] == 0
-                
+                next_lap_data = ep[ep.LapCount == lapCount+1]  # should be always non-empty because we don't process the last lap
+                if i == 0:
+                    # first lap may have a time reset
+                    # split into chunks and update lap data to point only at the last chunk
+                    time_diff = lap_data['currentTime'].diff()
+
+                    reset_points = (time_diff < 0).astype(int).cumsum()
+                    max_reset_point = reset_points.max()
+                    last_chunk = lap_data[reset_points == max_reset_point]
+                    lap_data = last_chunk
+
+                lap_complete_and_valid =  lap_data['done'].values[-1] == 0
+                if next_lap_data.empty:
+                    # this should be always non-empty but just in case it's empty, we print a warning
+                    logger.warning(f"Warning. Next lap was empty for episode {r['ep_count']}. Lap count: {lapCount}, next lap count {lapCount + 1}. Lap begins at step {lap_data['steps'].values[0]}")
+
                 # calculate lap time in seconds
-                lap_time_seconds = lap_data["iLastTime"].values[-1] / 1000  # to seconds
-                lap_time_seconds = lap_time_seconds if lap_complete_and_valid else 0.0  # check if the lap is valid, else store 0 for this lap
+                if not next_lap_data.empty and lap_complete_and_valid:
+                    # iLastTime only gets updated in the next lap, so we need to peek to the next lap
+                    lap_time_seconds = next_lap_data["iLastTime"].values[0] / 1000  # to seconds
+                else:
+                    lap_time_seconds = 0.0
+                
                 r[f"LapNo_{i}_Time"] = lap_time_seconds
                 
-                # calculate fuel consumed per lap (only if the lap was complete and valid)
-                fuel_consumed = fuel_per_lap.values[i]
-                fuel_consumed = fuel_consumed if lap_complete_and_valid else 0.0  # check if lap is valid, else store 0 for this lap
+                # calculate fuel consumed per lap (only if the lap_time_seconds was properly set (lap was complete and valid))
+                fuel_start = lap_data['fuel'].values[0]
+                fuel_end = lap_data['fuel'].values[-1]
+                fuel_consumed = fuel_start - fuel_end
+                fuel_consumed = fuel_consumed if lap_time_seconds != 0.0 else 0.0  # check if lap is valid, else store 0 for this lap
                 r[f"LapNo_{i}_Fuel"] = fuel_consumed
                 
                 # update best_lap_fuel variable
