@@ -30,7 +30,7 @@ Environment for training and benchmarking energy-efficient autonomous agents in 
 - Fuel consumption metrics integrated into the environment
 - Customizable reward coefficient to penalize fuel use
 - High-fidelity simulation for testing in realistic conditions
-
+- Compatibility with various tracks and cars
 
 ## 🔧 Extensions from Assetto Corsa Gym
 ### 🏁 Reward Function Modification
@@ -63,8 +63,8 @@ We trained the agents with four different values of $b$ to produce approximate r
 The coefficients used in our experiments are:
 | Car Model  | 2% Penalty | 5% Penalty | 10% Penalty | 20% Penalty |
 | ---------- | ---------- | ---------- | ----------- | ----------- |
-| BMW Z4 GT3 | 139        | 360        | 719         | 1439        |
-| F317  | 249        | 623        | 1240        | 2480        |
+| BMW Z4 GT3 | 13.9        | 36.0        | 71.9         | 143.9        |
+| F317  | 24.9        | 62.3        | 124.0        | 248.0        |
 
 
 
@@ -145,17 +145,14 @@ We used the **Soft Actor-Critic (SAC)** algorithm for all experiments. Training 
 </table>
 
 <table>
-  <caption align="center"><strong>Red Bull Ring Comparison (5% Penalty – No Penalty)</strong></caption>
+  <caption align="center"><strong>Austria Comparison (5% Penalty – No Penalty)</strong></caption>
   <tr>
     <td align="center"><strong>Fuel Usage Difference</strong><br>
-      <em>10.7% ↓ 
-          <span style="color:blue;">(-0.19 L)</span>
-      </em><br>
+      10.7% ↓ $${\color{lightblue}(-0.19 L)}$$
+      <br>
     </td>
     <td align="center"><strong>Lap Time Difference</strong><br>
-      <em>0.2% ↓ 
-        <span style="color:blue;">(-0.18 s)</span>
-      </em>
+      0.2% ↓ $${\color{lightblue}(-0.18 s)}$$
     </td>
   </tr>
   <tr>
@@ -164,11 +161,11 @@ We used the **Soft Actor-Critic (SAC)** algorithm for all experiments. Training 
   </tr>
   <tr>
     <td align="left">
-      $${\color{blue}■}$$: penalized model saves fuel</li><br>
+      $${\color{lightblue}■}$$: penalized model saves fuel</li><br>
       $${\color{red}■}$$: penalized model consumes more</li>
     </td>
     <td align="left">
-      $${\color{blue}■}$$: penalized model is ahead</li><br>
+      $${\color{lightblue}■}$$: penalized model is ahead</li><br>
       $${\color{red}■}$$: penalized model is behind</li>
     </td>
   </tr>
@@ -178,14 +175,12 @@ We used the **Soft Actor-Critic (SAC)** algorithm for all experiments. Training 
   <caption align="center"><strong>Monza Comparison (2% Penalty – No Penalty)</strong></caption>
   <tr>
     <td align="center"><strong>Fuel Usage Difference</strong><br>
-      <em>1.46% ↓ 
-          <span style="color:blue;">(-0.035 L)</span>
-      </em><br>
+      1.46% ↓ $${\color{lightblue}(-0.035 L)}$$
+      <br>
     </td>
     <td align="center"><strong>Lap Time Difference</strong><br>
-      <em>1.74% ↑ 
-        <span style="color:red;">(+1.95 s)</span>
-      </em>
+      1.74% ↑ 
+        $${\color{red}(+1.95 s)}$$
     </td>
   </tr>
   <tr>
@@ -194,11 +189,11 @@ We used the **Soft Actor-Critic (SAC)** algorithm for all experiments. Training 
   </tr>
    <tr>
     <td align="left">
-      $${\color{blue}■}$$: penalized model saves fuel</li><br>
+      $${\color{lightblue}■}$$: penalized model saves fuel</li><br>
       $${\color{red}■}$$: penalized model consumes more</li>
     </td>
     <td align="left">
-      $${\color{blue}■}$$: penalized model is ahead</li><br>
+      $${\color{lightblue}■}$$: penalized model is ahead</li><br>
       $${\color{red}■}$$: penalized model is behind</li>
     </td>
   </tr>
@@ -326,6 +321,9 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 
 ## 🙌 Acknowledgments
 
-- AssettoCorsaGym (proper citation needed)
-- Assetto Corsa
-- Virtual Steward mode
+- [AssettoCorsaGym](https://assetto-corsa-gym.github.io/) \
+  This works builds on the AssettoCorsaGym framework. Please cite the original paper if using this environment.
+- [Assetto Corsa](https://assettocorsa.gg/) \
+  The Assetto Corsa simulation environment was used solely for the purposes of this research. We do not intend to use it in any public-facing or commercial context, nor in any activity involving public distribution or display. Assetto Corsa is publicly available on the Steam platform. **For research usage, appropriate permission should be obtained from the Assetto Corsa Support**
+- [Virtual Steward mod](https://www.overtake.gg/downloads/virtual-steward.65530/) \
+  The mod was used to generate the result visualizations seen in the overview animation (i.e. right side of the animation showing driving behavior changes) 
