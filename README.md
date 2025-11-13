@@ -1,6 +1,12 @@
 # 🏎️ Energy-Efficient Autonomous Racing with Reinforcement Learning
 
 
+<p align="center">
+  <a href="https://github.com/nomadflamingo/assetto_corsa_gym"><b>Main repository: github.com/nomadflamingo/assetto_corsa_gym</b></a>
+</p>
+
+---
+
 ## 📑 Table of Contents
 - [🚗 Overview](#-overview)
 - [✨ Key Features](#-key-features)
@@ -61,10 +67,35 @@ Both variables can be modified in the `config.yml` file.
 We trained the agents with four different values of $b$ to produce approximate reductions of 2%, 5%, 10%, and 20% relative to the original reward function (i.e., with $b = 0$). The required value of $b$ differs depending on the car, as fuel consumption varies by vehicle model due to weight, aerodynamics, gearing, engine characteristics, etc. 
 
 The coefficients used in our experiments are:
-| Car Model  | 2% Penalty | 5% Penalty | 10% Penalty | 20% Penalty |
-| ---------- | ---------- | ---------- | ----------- | ----------- |
-| BMW Z4 GT3 | 139        | 360        | 719         | 1439        |
-| F317  | 249        | 623        | 1240        | 2480        |
+
+<table>
+  <thead>
+    <tr>
+      <th>Car Model</th>
+      <th>2% Penalty</th>
+      <th>5% Penalty</th>
+      <th>10% Penalty</th>
+      <th>20% Penalty</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>BMW Z4 GT3</td>
+      <td>139</td>
+      <td>360</td>
+      <td>719</td>
+      <td>1439</td>
+    </tr>
+    <tr>
+      <td>F317</td>
+      <td>249</td>
+      <td>623</td>
+      <td>1240</td>
+      <td>2480</td>
+    </tr>
+  </tbody>
+  
+</table>
 
 
 
