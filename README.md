@@ -202,7 +202,7 @@ We used the **Soft Actor-Critic (SAC)** algorithm for all experiments. Training 
 ### 📝 Summary of Results
 
 
-Our experiments show that adding a fuel consumption penalty to the reward function leads to more fuel-efficient policies without significantly reducing lap time. 
+Our experiments show that adding a fuel consumption penalty to the reward function leads to more fuel-efficient policies without significantly affecting lap time. 
 - **Austria (RBR)** - a medium difficulty track: \
 mild penalties often improved both fuel efficiency and speed. 
 - **Monza (MNZ)** - a more complex track: \
