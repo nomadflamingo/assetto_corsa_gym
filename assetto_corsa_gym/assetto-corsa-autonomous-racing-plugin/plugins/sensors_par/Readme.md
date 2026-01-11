@@ -1,5 +1,0 @@
-# Assetto Corsa Plugin
-
-
-
-

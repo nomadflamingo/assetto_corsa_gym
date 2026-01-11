@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Main Step: Edit below title -->
+    <title>Energy Conservation for Autonomous Agents Using Reinforcement Learning</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="" />
+    <meta
+      name="keywords"
+      content="reinforcement learning, autonomous driving, energy efficiency, multi-objective optimization, Soft Actor-Critic, racing simulation"
+    />
+    <!-- <meta name="author" content="Research Paper Platform" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      name="robots"
+      content="max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    /> -->
+
+    <!-- Open Graph Meta Tags (For Social Media Sharing) -->
+    <!-- <meta
+      property="og:title"
+      content="Research Papers - Explore Cutting-Edge Research"
+    />
+    <meta
+      property="og:description"
+      content=""
+    />
+    <meta property="og:image" content="path-to-your-image.jpg" />
+    <meta property="og:url" content="https://www.yourwebsite.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Research Paper Platform" /> -->
+
+    <!-- Twitter Meta Tags (For Twitter Sharing) -->
+    <!-- <meta
+      name="twitter:title"
+      content="Research Papers - Explore Cutting-Edge Research"
+    />
+    <meta
+      name="twitter:description"
+      content=""
+    />
+    <meta name="twitter:image" content="path-to-your-image.jpg" />
+    <meta name="twitter:card" content="summary_large_image" /> -->
+
+    <!-- Canonical Link -->
+    <!-- <link rel="canonical" href="https://www.yourwebsite.com" /> -->
+
+    <!-- Favicon for different platforms -->
+    <link
+      rel="icon"
+      href="Assets/Favicon/icons8-research-color-16.png"
+      sizes="16x16"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href="Assets/Favicon/icons8-research-color-32.png"
+      sizes="32x32"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href="Assets/Favicon/icons8-research-color-70.png"
+      sizes="70x70"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href="Assets/Favicon/icons8-research-color-72.png"
+      sizes="72x72"
+      type="image/png"
+    />
+    <link
+      rel="icon"
+      href="Assets/Favicon/icons8-research-color-96.png"
+      sizes="96x96"
+      type="image/png"
+    />
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <nav class="nav">
+      <a href="#video">Demo Video</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#images">Figures</a>
+      <a href="#acknowledgements">Acknowledgements</a>
+      <button class="toggle-btn" onclick="toggleDarkMode()">
+        Toggle Dark Mode
+      </button>
+    </nav>
+
+    <!-- Step 1 Start: Header Part -->
+
+    <!-- 
+    Remove if not applicable
+    Edit below todo text
+    Add URL link by removing # for each authers. Link can be GitHub, LinkedIn, Google Schooler, Website or other
+    -->
+
+    <div class="header">
+      <h1>Energy Conservation for Autonomous Agents Using Reinforcement Learning</h1>
+      <div class="authors">
+        <p>
+          <a href="https://scholar.google.com.ua/citations?hl=en&user=zjjyJLkAAAAJ">Volodymyr Beimuk</a>,
+          <a href="https://scholar.google.com.ua/citations?user=8gFMCU0AAAAJ&hl=en">Dmytro Kuzmenko</a>
+        </p>
+        
+        <p>NaUKMA Research Papers. Computer Science</p>
+      </div>
+    </div>
+
+    <!-- Step 1 End: Header Part -->
+    <!-- Step 2 Start: Button for links -->
+
+    <!-- 
+    Add URL links for each buttons according to name mentioned
+    Remove # and add the link
+    Add new button link if required
+    Remove this step if not applicable
+    -->
+
+    <div class="buttons">
+      <a href="https://www.researchgate.net/publication/398248669_Energy_Conservation_for_Autonomous_Agents_Using_Reinforcement_Learning" target="_blank">Paper</a>
+      <a href="https://github.com/nomadflamingo/assetto_corsa_gym" target="_blank">Code</a>
+      <a href="https://www.youtube.com/watch?v=JbOJbG20lWw" target="_blank">Video</a>
+      <a href="#bibtex">BibTex</a>
+    </div>
+
+    <!-- Step 2 End: Button for links -->
+
+    <!-- Step 3 Start: Add your paper abstract -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    -->
+
+    <!-- Single YouTube Video -->
+    <div class="video-section" id="video">
+      <h3>Demo Video</h3>
+      <div class="video-container">
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/watch?v=JbOJbG20lWwP"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <p>
+        Comparison of baseline and penalized agents completing a lap in the simulation with input recordings 
+        Plots indicate fuel consumption difference, difference between driving lines, cumulative fuel difference over time
+      </p>
+    </div>
+
+    <div class="abstract" id="abstract">
+      <h2>Abstract</h2>
+      <p>Reinforcement learning (RL) has shown strong potential in autonomous racing for its adaptability to complex and dynamic driving environments. However, most research prioritizes performance metrics such as speed and lap time. Limited consideration is given to improving energy efficiency, despite its increasing importance in sustainable autonomous systems. This work investigates the capacity of RL agents to develop multi-objective driving strategies that balance lap time and fuel consumption by incorporating a fuel usage penalty into the reward function. To simulate realistic uncertainty, fuel usage is excluded from the observation space, forcing the agent to infer fuel consumption indirectly. Experiments are conducted using the Soft Actor-Critic algorithm in a high-fidelity racing simulator, Assetto Corsa, across multiple configurations of vehicles and tracks.We compare various penalty strengths against the non-penalized agent and evaluate fuel consumption, lap time, acceleration and braking profiles, gear usage, engine RPM, and steering behavior. Results show that mild to moderate penalties lead to significant fuel savings with minimal or no loss in lap time. Our findings highlight the viability of reward shaping for multi-objective optimization in autonomous racing and contribute to broader efforts in energy-aware RL for control tasks. Results and supplementary material are available on our project website.</p>
+    </div>
+
+    <!-- Step 3 End: Add your paper abstract -->
+
+    <!-- Step 4 Start: Add your paper introduction -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    -->
+
+    <!-- Step 4 End: Add your paper introduction -->
+
+    <!-- Step 5 Start: Add your paper methodology -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    -->
+
+    <!-- Step 5 End: Add your paper methodology -->
+
+    <!-- Step 6 Start: Add your paper results -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    Below have pre-build code for:
+    -> 3 Images Carousel
+    -> 3 Videos Carousel
+    -> Single YouTube Video
+    -> YouTube Video List
+    If you do not need those, remove them.
+    How to add YouTube Video:
+    -> Go to the video page
+    -> Click Share Button and Click <> Mark
+    -> This will give <iframe></iframe> tag code
+    -> Replace below <iframe></iframe> tag with your code
+    -->
+
+    <!-- 3 Images Carousel -->
+    <h3>Image Gallery</h3>
+    <div class="carousel-container" id="imageCarousel">
+      <div class="carousel-track">
+        <div class="carousel-slide">
+          <img src="Assets/Photo1.jpg" alt="Slide 1" />
+        </div>
+        <div class="carousel-slide">
+          <img src="Assets/Photo2.jpg" alt="Slide 2" />
+        </div>
+        <div class="carousel-slide">
+          <img src="Assets/Photo3.jpg" alt="Slide 3" />
+        </div>
+        <div class="carousel-slide">
+          <img src="Assets/Photo4.jpg" alt="Slide 4" />
+        </div>
+        <div class="carousel-slide">
+          <img src="Assets/Photo5.jpg" alt="Slide 5" />
+        </div>
+        <div class="carousel-slide">
+          <img src="Assets/Photo6.jpg" alt="Slide 6" />
+        </div>
+      </div>
+      <button class="carousel-button prev">←</button>
+      <button class="carousel-button next">→</button>
+      <div class="carousel-indicators"></div>
+    </div>
+
+
+    <!-- Step 6 End: Add your paper results -->
+
+    <!-- Step 7 Start: Add your paper conclusion -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    -->
+
+    <!-- Step 7 End: Add your paper conclusion -->
+
+    <!-- Step 8 Start: Add your paper references -->
+
+    <!-- 
+    Please only edit below between CODE tags - TODOs
+    Remove this step if not applicable
+    -->
+
+    <div class="bibtex-section" id="bibtex">
+      <h2>BibTeX</h2>
+      <button class="bibtex-copy-button" onclick="copyBibTeX()">
+        Copy to Clipboard
+      </button>
+      <pre>
+        <!-- Please edit only below details -->
+        <code class="language-bibtex">
+          @article{article,
+            author = {Beimuk, Volodymyr and Kuzmenko, Dmytro},
+            year = {2025},
+            month = {11},
+            pages = {68-75},
+            title = {Energy Conservation for Autonomous Agents Using Reinforcement Learning},
+            volume = {8},
+            journal = {NaUKMA Research Papers. Computer Science},
+            doi = {10.18523/2617-3808.2025.8.68-75}
+          }
+        </code>
+      </pre>
+    </div>
+
+    <!-- Step 8 End: Add your paper references -->
+
+    <!-- Step 9 Start: Add your paper acknowledgement -->
+
+    <!-- 
+    Please do not remove below H2 heading tag. Add your HTML code after H2 HTML tag or add text inside P HTML tag. 
+    Remove this step if not applicable
+    -->
+
+    <div class="content-section" id="acknowledgements">
+      <h2>Acknowledgments</h2>
+      <ul>
+        <li>
+          <a href="https://assetto-corsa-gym.github.io/" target="_blank">AssettoCorsaGym</a><br />
+          This work builds on the AssettoCorsaGym framework. Please cite the original paper if using this environment.
+        </li>
+        <li>
+          <a href="https://assettocorsa.gg/" target="_blank">Assetto Corsa</a><br />
+          The Assetto Corsa simulation environment was used solely for the purposes of this research. We do not intend to use it in any public-facing or commercial context, nor in any activity involving public distribution or display. Assetto Corsa is publicly available on the Steam platform. <strong>For research usage, appropriate permission should be obtained from the Assetto Corsa Support</strong>
+        </li>
+        <li>
+          <a href="https://www.overtake.gg/downloads/virtual-steward.65530/" target="_blank">Virtual Steward mod</a><br />
+          This mod was used to generate the middle right animation seen in the demo video, to display changes in the racing lines
+        </li>
+        <li>
+          <a href="https://github.com/frits-z/ac-traces/tree/master" target="_blank">Traces</a><br />
+          This mod was used to display models' inputs seen at the bottom of the demo video
+        </li>
+        <li>
+          <a href="https://github.com/indramal/iNdra-GitHub-Page-Template-For-Resarch" target="_blank">iNdra Website Template for Research</a>
+          Template used for this website
+        </li>
+      </ul>
+    </div>
+
+    <!-- Step 9 End: Add your paper acknowledgement -->
+
+    <div class="footer">
+      <!-- Step 10 Start: Edit footer -->
+      <p>© 2025 National University of Kyiv-Mohyla Academy. All rights reserved.</p>
+      <!-- Step 10 End: Edit footer -->
+      <!-- Please do not remove below code. -->
+      <p>
+        Website template free to borrow from
+        <a
+          href="https://github.com/indramal/iNdra-GitHub-Page-Template-For-Resarch"
+          >here</a
+        >.
+      </p>
+       <div>
+</div>
+
+    <!-- Do not edit below button -->
+    <button class="scrollUpBtn" id="scrollUpBtn" onclick="scrollToTop()">
+      ⬆
+    </button>
+
+    <!-- Lightbox Modal for Image Carousel -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+      <span class="lightbox-close">&times;</span>
+      <img id="lightbox-img" class="lightbox-content" />
+      <button class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); navigateLightbox(-1)">←</button>
+      <button class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); navigateLightbox(1)">→</button>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
