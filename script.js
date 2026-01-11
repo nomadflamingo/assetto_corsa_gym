@@ -144,22 +144,16 @@ function copyBibTeX() {
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const imageCarousel = new Carousel(
-      document.querySelector("#imageCarousel"),
-      3000
-    );
-    const videoCarousel = new Carousel(
-      document.querySelector("#videoCarousel"),
-      5000
-    );
+    const imageCarouselElement = document.querySelector("#imageCarousel");
+    
+    if (imageCarouselElement) {
+      const imageCarousel = new Carousel(imageCarouselElement, 3000);
 
-    // Add touch support
-    const carousels = [imageCarousel, videoCarousel];
-    carousels.forEach((carousel) => {
+      // Add touch support for image carousel
       let touchStartX = 0;
       let touchEndX = 0;
 
-      carousel.container.addEventListener(
+      imageCarousel.container.addEventListener(
         "touchstart",
         (e) => {
           touchStartX = e.changedTouches[0].screenX;
@@ -167,11 +161,11 @@ function copyBibTeX() {
         { passive: true }
       );
 
-      carousel.container.addEventListener(
+      imageCarousel.container.addEventListener(
         "touchend",
         (e) => {
           touchEndX = e.changedTouches[0].screenX;
-          handleSwipe(carousel);
+          handleSwipe(imageCarousel);
         },
         { passive: true }
       );
@@ -188,7 +182,7 @@ function copyBibTeX() {
           }
         }
       }
-    });
+    }
 
     // Initialize lightbox for image carousel
     initializeLightbox();
